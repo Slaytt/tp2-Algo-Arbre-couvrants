@@ -27,6 +27,20 @@ public class Graph {
         // par suppression de sommet, ou l'opération de contraction d’arête.
         // Autrement, on pourra asssumer que upperBound==order.
 
+        this.upperBound = upperBound;
+        this.order = upperBound;
+        this.edgeCardinality = 0;
+
+        incidency = new ArrayList<>(upperBound);
+        inIncidency = new ArrayList<>(upperBound);
+        outIncidency = new ArrayList<>(upperBound);
+
+        for (int i = 0; i < upperBound; i++) {
+            incidency.add(new LinkedList<Edge>());
+            inIncidency.add(new LinkedList<Arc>());
+            outIncidency.add(new LinkedList<Arc>());
+        }
+
         // à compléter
     }
 
@@ -53,11 +67,25 @@ public class Graph {
     }
 
     public void addArc(Arc arc) {
-        // à compléter
+        outIncidency.get(arc.getSource()).add(arc);
+        inIncidency.get(arc.getDest()).add(arc);
     }
 
     public void addEdge(Edge edge) {
-        // à compléter
+        incidency.get(edge.source).add(edge);
+        incidency.get(edge.dest).add(edge);
+        this.edgeCardinality = this.edgeCardinality + 1;
+
+        Arc arcAvant = new Arc(edge, false);
+        Arc arcArriere = new Arc(edge, true);
+
+        outIncidency.get(arcAvant.getSource()).add(arcAvant);
+        inIncidency.get(arcAvant.getDest()).add(arcAvant);
+
+        outIncidency.get(arcArriere.getSource()).add(arcArriere);
+        inIncidency.get(arcArriere.getDest()).add(arcArriere);
+
+
     }
 
     public Arc[] outEdges(int vertex) {
@@ -66,6 +94,19 @@ public class Graph {
         // Pour la prochaine ligne voir
         // https://www.baeldung.com/java-collection-toarray-methods
         return outIncidency.get(vertex).toArray(new Arc[0]);
+   }
+
+   public ArrayList<Edge> getAllEdges() {
+       ArrayList<Edge> allEdges = new ArrayList<>();
+
+       for (int u = 0; u < order; u++) {
+           for (Edge e : incidency.get(u)) {
+               if (e.source == u) { //on ajoute l'arête ssi u est la source pour skip les doublons
+                   allEdges.add(e);
+               }
+           }
+       }
+       return allEdges;
    }
 
 }

@@ -10,7 +10,7 @@ CLASSES=$(shell find $(INSTALLDIR)/$(MAINDIR) -name \*.class)
 compile: $(subst .,/,$(MAINCLASS)).class
 
 %.class: %.java
-	javac -g -d $(INSTALLDIR) *.java
+	javac -g -d $(INSTALLDIR) Main.java
 
 clean:
 	## Rien à faire, tout à été compilé et installé dans INSTALLDIR
