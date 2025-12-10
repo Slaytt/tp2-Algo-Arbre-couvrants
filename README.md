@@ -1,48 +1,79 @@
-# Random Spanning Trees
+# TP2 : Génération aléatoire d'arbres couvrants
 
-This project implements a library to generate random spanning trees using various algorithms and analyzes their properties.
+**Membre :**
+- Ranzi teo
 
-## Algorithms & Complexity
+## Description du projet
 
-### 1. Random Weight MST (Kruskal/Prim)
-- **Description**: Assigns random weights to edges and finds the Minimum Spanning Tree.
-- **Complexity**: O(E log E) or O(E log V) depending on implementation. Using Kruskal's with Union-Find, it is dominated by sorting edges.
-- **Result**: Generates trees that are effectively uniform random spanning trees (for random weights).
+Ce projet a pour but d'implémenter et de comparer différents algorithmes de génération d'arbres couvrants aléatoires sur des graphes. Nous nous sommes concentrés sur des graphes de type "Grille" pour visualiser les résultats sous forme de labyrinthes.
 
-### 2. Random DFS
-- **Description**: Depth-First Search with random neighbor selection.
-- **Complexity**: O(V + E). Linear time.
-- **Result**: **NOT Uniform**. Tends to generate "long and thin" trees with high diameter and low degree distribution.
+Quatre algorithmes ont été implémentés :
+1.  **RandomWeightMST** (Kruskal/Prim avec poids aléatoires)
+2.  **RandomDFS** (Parcours en profondeur aléatoire)
+3.  **Aldous-Broder** (Marche aléatoire simple)
+4.  **Wilson** (Marche aléatoire avec effacement de boucles - Loop Erased Random Walk)
 
-### 3. Aldous-Broder
-- **Description**: Random walk until all vertices are visited.
-- **Complexity**: O(V log V) on average for many graphs, but can be O(V^3) or worse (cover time).
-- **Result**: **Uniform**. Generates a uniform random spanning tree.
+## Compilation et Exécution
 
-### 4. Wilson's Algorithm
-- **Description**: Loop-Erased Random Walk.
-- **Complexity**: More efficient than Aldous-Broder. Average time is proportional to the mean hitting time.
-- **Result**: **Uniform**. Generates a uniform random spanning tree.
+Le projet utilise un `Makefile` pour la compilation et l'exécution.
 
-## Analysis of Results
+### Commandes disponibles :
 
-- **Uniform Algorithms (Aldous-Broder, Wilson, Random Weight MST)**: Produce trees with "balanced" properties. The diameter is typically proportional to sqrt(V) for grid graphs.
-- **Random DFS**: Produces trees with much higher diameter (proportional to V) and lower average degree. They look like long paths with short branches.
+* **Compiler le projet :**
+    ```bash
+    make compile
+    ```
 
-## How to Run
+* **Exécuter le programme :**
+    ```bash
+    make exec
+    ```
+    *Cette commande lance la génération des arbres sur une grille de 100x100 (Ordre 10 000), calcule les statistiques sur 40 échantillons pour chaque algorithme, et génère les images des labyrinthes (fichiers `.png`).*
 
-### Compile
-```bash
-make compile
-```
+* **Nettoyer les fichiers compilés :**
+    ```bash
+    make clean
+    ```
 
-### Run
-```bash
-make exec
-```
-This will run all 4 algorithms on a 20x20 Grid Graph (10 samples each) and print the average statistics.
+## Analyse des Résultats
 
-### Clean
-```bash
-make clean
-```
+Les algorithmes ont été testé sur une grille de taille **100x100** (contenant 10 000 sommets). Voici les moyennes obtenues sur **40 échantillons** :
+
+| Algorithme | Temps moyen | Diamètre moyen | Excentricité moy. | Nombre de feuilles | Nœuds de degré 2 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **RandomWeightMST** | 1 ms | 604 | 156 | 3053 (~30%) | 4293 |
+| **RandomDFS** | 3 ms | 3839 | 1001 | 998 (~10%) | 8022 |
+| **Aldous-Broder** | 11 ms | 737 | 186 | 2937 (~29%) | 4483 |
+| **Wilson** | 4 ms | 703 | 181 | 2931 (~29%) | 4492 |
+
+### Comparaison des Algorithmes
+
+**1. Uniformité (Wilson, Aldous-Broder, RandomWeightMST)**
+On observe que ces trois algorithmes produisent des résultats statistiques très proches :
+* Leur **diamètre** tourne autour de 600-750.
+* Le nombre de **feuilles** est stable autour de 3000 (soit 30% des sommets).
+* L'**excentricité** est similaire (~150-180).
+
+Ces résultats confirment que ces trois algorithmes génèrent des arbres couvrants selon une **distribution uniforme**. Les arbres produits sont "équilibrés", foisonnants et possèdent une structure fractale typique.
+
+**2. Le cas particulier du RandomDFS**
+L'algorithme de parcours en profondeur aléatoire (RandomDFS) se distingue radicalement :
+* Son **diamètre est immense** (3839 contre ~700 pour les autres).
+* Il possède très **peu de feuilles** (~10% contre ~30%).
+* La grande majorité des nœuds sont de **degré 2** (80%).
+
+Cela s'explique par la nature de l'algorithme qui cherche à aller "le plus loin possible" avant de revenir en arrière. Il génère des arbres filiformes, ressemblant à de longs serpents tortueux avec peu d'embranchements. Ce n'est **pas** un générateur uniforme.
+
+**3. Performance**
+* **RandomWeightMST** et **Wilson** sont très rapides (1ms et 4ms). Wilson est particulièrement efficace sur les grilles car il converge vite une fois que l'arbre commence à remplir l'espace.
+* **Aldous-Broder** est le plus lent (11ms), car il souffre du problème du "collectionneur de vignettes" : il met beaucoup de temps à trouver les derniers sommets non visités à la fin de l'exécution.
+
+## Addendum : Relation entre Arbres Couvrants et Labyrinthes
+
+Un arbre couvrant généré sur un graphe de type "grille" correspond exactement à la définition mathématique d'un **labyrinthe parfait**.
+
+* **Connexe :** Toutes les cases (sommets) sont accessibles.
+* **Acyclique :** Il n'y a pas de boucles (on ne peut pas tourner en rond).
+* **Unicité du chemin :** Il existe un unique chemin entre n'importe quelle paire de cases (par exemple entre l'entrée et la sortie).
+
+Les murs du labyrinthe correspondent aux arêtes du graphe dual qui ne sont pas sélectionnées dans l'arbre couvrant. Nos visualisations (les images `.png` générées) illustrent ce principe : les chemins colorés représentent les arêtes de l'arbre.

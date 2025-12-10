@@ -16,9 +16,9 @@ public class Main {
     public static void main(String argv[]) throws InterruptedException, IOException {
 
         // 1. Generate a Grid Graph (20x20)
-        grid = new Grid(20, 20);
+        grid = new Grid(100, 100);
         Graph graph = grid.graph;
-        System.out.println("Graph: Grid 20x20, Order: " + graph.order);
+        System.out.println("Graph: Grid 200x200, Order: " + graph.order);
 
         // 2. Define Algorithms
         SpanningTreeGenerator[] algos = {
