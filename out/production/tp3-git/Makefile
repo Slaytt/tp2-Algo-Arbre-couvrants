@@ -3,14 +3,13 @@
 MAINCLASS=Main
 ## Le chemin vers où votre classe compilée est installée
 # Renommez si nécessaire
-INSTALLDIR=../bin
+INSTALLDIR=../out/production/TP3
 MAINDIR=$(dir $(subst .,/,$(MAINCLASS)))
 CLASSES=$(shell find $(INSTALLDIR)/$(MAINDIR) -name \*.class)
 
 compile: $(subst .,/,$(MAINCLASS)).class
 
 %.class: %.java
-	mkdir -p $(INSTALLDIR)
 	javac -g -d $(INSTALLDIR) Main.java
 
 clean:

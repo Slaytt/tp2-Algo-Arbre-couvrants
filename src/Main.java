@@ -1,7 +1,8 @@
 import Graph.*;
 import GraphClasses.*;
 import RandomTreeAlgos.*;
-
+import Graphics.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ public class Main {
 
     static Grid grid = null;
 
-    public static void main(String argv[]) throws InterruptedException {
+    public static void main(String argv[]) throws InterruptedException, IOException {
 
         // 1. Generate a Grid Graph (20x20)
         grid = new Grid(20, 20);
@@ -39,6 +40,23 @@ public class Main {
                 long start = System.nanoTime();
                 ArrayList<Edge> randomTree = algos[i].generate(graph);
                 long end = System.nanoTime();
+
+                if (j == 0) { // Sauvegarder seulement le premier exemple
+                    RootedTree rooted = new RootedTree(randomTree, 0);
+                    Labyrinth lab = new Labyrinth(grid, rooted);
+
+                    // 1. IMPORTANT : Il faut ajouter les arêtes pour qu'elles soient tracées
+                    for (Edge e : randomTree) {
+                        lab.addEdge(e);
+                    }
+
+                    // 2. IMPORTANT : Il faut appeler la méthode qui dessine réellement sur l'image
+                    lab.drawLabyrinth();
+
+                    lab.saveImage("result_" + names[i] + ".png");
+                    System.out.println("Image generated: result_" + names[i] + ".png");
+                }
+
                 stats.update(randomTree, end - start);
             }
             stats.print();

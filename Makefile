@@ -3,7 +3,7 @@
 MAINCLASS=Main
 ## Le chemin vers où votre classe compilée est installée
 # Renommez si nécessaire
-INSTALLDIR=out/production/TP3
+INSTALLDIR=bin
 JARFILE=TP3RandomTrees
 
 all: compile install exec
