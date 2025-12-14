@@ -29,7 +29,6 @@ public class Main {
         };
         String[] names = { "RandomWeightMST", "RandomDFS", "AldousBroder", "Wilson" };
 
-        // 3. Run Experiments
         int noOfSamples = 40;
 
         for (int i = 0; i < algos.length; i++) {
@@ -41,16 +40,13 @@ public class Main {
                 ArrayList<Edge> randomTree = algos[i].generate(graph);
                 long end = System.nanoTime();
 
-                if (j == 0) { // Sauvegarder seulement le premier exemple
+                if (j == 0) {
                     RootedTree rooted = new RootedTree(randomTree, 0);
                     Labyrinth lab = new Labyrinth(grid, rooted);
 
-                    // 1. IMPORTANT : Il faut ajouter les arêtes pour qu'elles soient tracées
                     for (Edge e : randomTree) {
                         lab.addEdge(e);
                     }
-
-                    // 2. IMPORTANT : Il faut appeler la méthode qui dessine réellement sur l'image
                     lab.drawLabyrinth();
 
                     lab.saveImage("result_" + names[i] + ".png");

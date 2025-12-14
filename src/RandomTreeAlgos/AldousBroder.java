@@ -23,7 +23,7 @@ public class AldousBroder implements SpanningTreeGenerator {
         while (visitedCount < n) {
             Arc[] neighbors = graph.outEdges(current);
             if (neighbors.length == 0)
-                break; // Should not happen in connected graph
+                break;
 
             Arc arc = neighbors[random.nextInt(neighbors.length)];
             int neighbor = arc.getDest();

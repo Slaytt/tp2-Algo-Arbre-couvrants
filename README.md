@@ -77,3 +77,30 @@ Un arbre couvrant généré sur un graphe de type "grille" correspond exactement
 * **Unicité du chemin :** Il existe un unique chemin entre n'importe quelle paire de cases (par exemple entre l'entrée et la sortie).
 
 Les murs du labyrinthe correspondent aux arêtes du graphe dual qui ne sont pas sélectionnées dans l'arbre couvrant. Nos visualisations (les images `.png` générées) illustrent ce principe : les chemins colorés représentent les arêtes de l'arbre.
+
+## Références et Bibliographie
+
+Pour la réalisation de ce projet, je me suis appuyé sur les ressources suivantes :
+
+### 1. Documents de Cours
+* **Sujet du TP2 :** "Génération aléatoire d'arbres couvrants", Algorithmique 2, Licence Informatique, Aix-Marseille Université.
+* **Articulation Points :** "Finding Articulation Points", Université de Montréal (mentionné dans le sujet pour les extensions).
+
+### 2. Algorithmes et Structures de Données
+* **Union-Find (Weighted Quick Union) :**
+    * *Source :* Algorithms, 4th Edition (Sedgewick & Wayne) - Princeton University.
+    * *Lien :* [https://algs4.cs.princeton.edu/15uf/](https://algs4.cs.princeton.edu/15uf/)
+    * *Usage :* Utilisé pour l'implémentation efficace de la structure Union-Find dans l'algorithme d'Insertion Aléatoire (Kruskal) et la gestion des composantes connexes. (Voir `src/AlgoGraph/UnionFind.java`).
+
+### 3. Articles Scientifiques (Algorithmes Uniformes)
+* **Algorithme de Wilson :**
+    * *Papier :* Wilson, D. B. (1996). "Generating random spanning trees more quickly than the cover time".
+    * *Description :* Décrit la méthode "Loop-Erased Random Walk" (LERW) que j'ai implémenté pour générer des arbres uniformes efficacement.
+* **Algorithme d'Aldous-Broder :**
+    * *Papier :* Broder, A. (1989). "Generating random spanning trees".
+    * *Description :* Décrit l'approche basée sur une marche aléatoire simple couvrant tout le graphe.
+
+### 4. Visualisation et Labyrinthes
+* **Visualizing Algorithms (Mike Bostock) :**
+    * *Lien :* [https://bost.ocks.org/mike/algorithms/](https://bost.ocks.org/mike/algorithms/)
+    * *Usage :* Une référence visuelle excellente pour comprendre comment les différents algorithmes (notamment le DFS aléatoire vs Prim/Wilson) remplissent une grille et génèrent des textures de labyrinthes différentes.
